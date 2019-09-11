@@ -2,11 +2,9 @@ print("What is your name?", terminator: " ")
 let name = readLine() ?? "Nobody"
 
 print("Hello \(name), do you enjoy CIS 200?", terminator: " ")
-let likeString = readLine() ?? ""
+var yesNo = positiveReply(test: readLine() ?? "")
 
-var yesNo = positiveReply(test: likeString)
-
-print("\(yesNo ? "Glad to hear it!" : "That's too bad...") What did you score on your last assignment?", terminator: " ")
+print("\(yesNo ? "Glad to hear it!" : "That's too bad...") What did you score on your last assignment, \(name)?", terminator: " ")
 let test = Int(Double(readLine() ?? "0") ?? 0)
 
 let testLetter: Character
@@ -26,7 +24,7 @@ switch abs(test) {
 print("Which is more fun?\n(drinking, learning, playing games):", terminator: " ")
 var hobby = readLine() ?? ""
 
-var branches: Array<String> = []
+var branches: [String] = []
 let player = Person(userName: name, likesClass: yesNo, hobbyActivity: hobby, testScore: testLetter)
 var story = Story(player: player, branches: branches)
 

@@ -12,8 +12,8 @@ struct Person {
 
 struct Story {
     let player: Person
-    var branches: Array<String>
-    init(player: Person, branches: Array<String>) {
+    var branches: [String]
+    init(player: Person, branches: [String]) {
         self.player = player
         self.branches = branches
     }
