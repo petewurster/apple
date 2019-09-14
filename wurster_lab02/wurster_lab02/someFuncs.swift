@@ -1,7 +1,7 @@
 func positiveReply(test: String) -> Bool{
     let tested: Bool
     switch test {
-    case "y", "yes", "yep", "Y", "YES", "YEP", "true", "TRUE", "T":
+    case "y", "yes", "yep", "Y", "yeah", "YEAH", "YES", "YEP", "true", "TRUE", "T", "t":
         tested = true
     default:
         tested = false
