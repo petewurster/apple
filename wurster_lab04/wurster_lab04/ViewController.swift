@@ -6,8 +6,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var verifyUserInput: UITextField!
     @IBOutlet weak var resultMessages: UITextView!
     
-    var testPassword: String = ""
-    var verifyPassword: String = ""
+    var testPassword = ""
+    var verifyPassword = ""
     var errors: Set = [""]
     let commonBadPasswords = ["password", "123456", "12345678", "1234", "qwerty", "12345", "dragon", "letmein", "monkey", "abc123"]
   
@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         let allGood: [Bool] = [passwordsMatch(),
                                passwordLengthIsGood(),
-                               stringSearchIsGood(testString: testPassword.lowercased())]
+                               stringSearchIsGood(testPassword.lowercased())]
         if allGood.reduce(true, {start, next in start && next}) {
             errors = ["\"\(testPassword)\" is okay"]
         }
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     }
     
     
-    func stringSearchIsGood(testString: String) -> Bool {
+    func stringSearchIsGood(_ testString: String) -> Bool {
         var goodStringTestResult = true
         for word in commonBadPasswords {
             //numeric strings from the bad password list are not allowed at beginning or end

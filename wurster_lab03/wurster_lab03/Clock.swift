@@ -12,7 +12,7 @@ class Clock{
     }
     
     //reset both clocks
-    static func resetClocks(clocks: Clock...) {
+    static func resetClocks(_ clocks: Clock...) {
         for clock in clocks {
             clock.isRunning = false
             clock.currentTime = clock.maxTime
@@ -21,7 +21,7 @@ class Clock{
     }
     
     //as long as one clock is running, decrement currentTime and update clock label
-    static func updateStatus(clocks: Clock...) {
+    static func updateStatus(_ clocks: Clock...) {
         for clock in clocks {
             if clock.isRunning {
                 clock.currentTime -= 1
@@ -35,7 +35,7 @@ class Clock{
     }
     
     //toggle clocks when tapped
-    func switchClocks(otherClock: Clock) {
+    func switchClocks(_ otherClock: Clock) {
         if self.isRunning {
             self.isRunning.toggle()
             otherClock.isRunning.toggle()

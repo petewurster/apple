@@ -11,21 +11,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var topLabel: UIButton!
     @IBAction func topClockTapped(_ sender: UIButton) {
         updateLabels()
-        topClock.switchClocks(otherClock: bottomClock)
+        topClock.switchClocks(bottomClock)
     }
     
     //create bottom button
     @IBOutlet weak var bottomLabel: UIButton!
     @IBAction func bottomClockTapped(_ sender: UIButton) {
         updateLabels()
-        bottomClock.switchClocks(otherClock: topClock)
+        bottomClock.switchClocks(topClock)
     }
     
     //reset both clocks
     @IBAction func resetButton(_ sender: UIButton) {
         //to prevent doubling, disable and then...
         pulse.invalidate()
-        Clock.resetClocks(clocks: topClock, bottomClock)
+        Clock.resetClocks(topClock, bottomClock)
         updateLabels()
         //... re-enable the pulse
         pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     
     //send message allowing Clocks to update themselves
     @objc func checkClocks() {
-        Clock.updateStatus(clocks: topClock, bottomClock)
+        Clock.updateStatus(topClock, bottomClock)
         updateLabels()
         //disable pulse when somebody has run out of time
         if topClock.label == topClock.endMessage || bottomClock.label == bottomClock.endMessage {
