@@ -19,18 +19,10 @@ class ViewController: UIViewController {
                                         ss: Int(ss.text!) ?? 0)
             //assign timestamp as value to key in boatList dictionary
             boatList[boatName.text!] = newBoatTime
-            //clear fields and display current calculations
-            boatName.text = ""
-            hh.text = ""
-            mm.text = ""
-            ss.text = ""
-            resultsView.text = "Fastest boat was \'\(fastestBoat().0)\' with a time of \(fastestBoat().1.stringTime)\n\n"
-            resultsView.text += "Slowest boat was \'\(slowestBoat().0)\' with a time of \(slowestBoat().1.stringTime)\n\n"
-            resultsView.text += "The average time of \(boatList.count) boat(s) was \(averageTime().stringTime)"
-        
+            clearFields()
+            showResults()
         }
     }
-    
     
     @IBAction func clearAllData(_ sender: UIButton) {
         boatList = [ : ]
@@ -39,29 +31,30 @@ class ViewController: UIViewController {
     
     func fastestBoat() -> (String, TimeStamp) {
         var boatName = String()
-        var time = TimeStamp(hh: 999999, mm: 0, ss: 0)
+        var fastestTime = boatList.values.first!
         for (key, value) in boatList {
-            if value.computedTime < time.computedTime {
-                time = value
+            if value.computedTime <= fastestTime.computedTime {
+                fastestTime = value
                 boatName = key
             }
         }
-        return (boatName, time)
+        return (boatName, fastestTime)
     }
     
     func slowestBoat() -> (String, TimeStamp) {
         var boatName = String()
-        //uses alt init method
-        var time = TimeStamp(-1)
+        var slowestTime = boatList.values.first!
         for (key, value) in boatList {
-            if value.computedTime > time.computedTime {
-                time = value
+            if value.computedTime >= slowestTime.computedTime {
+                slowestTime = value
                 boatName = key
             }
         }
-        return (boatName, time)
+        return (boatName, slowestTime)
     }
     
+    //average calculated using Ints rather than Doubles because the level of precision
+    //for times in a boat race should not need to be measured in fractions of a second
     func averageTime() -> (TimeStamp) {
         var sum = Int()
         for (_, value) in boatList {
@@ -79,6 +72,12 @@ class ViewController: UIViewController {
         resultsView.text = "\(boatList.count) boat(s) in the system.\n\nEnter a boat name to proceed."
     }
     
+    func showResults() {
+        resultsView.text = "Fastest boat was the \'\(fastestBoat().0)\' with a time of \(fastestBoat().1.stringTime)\n\n"
+        resultsView.text += "Slowest boat was the \'\(slowestBoat().0)\' with a time of \(slowestBoat().1.stringTime)\n\n"
+        resultsView.text += "The average time of \(boatList.count) boat(s) was \(averageTime().stringTime)"
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +86,7 @@ class ViewController: UIViewController {
         hh.delegate = self
         mm.delegate = self
         ss.delegate = self
+        clearFields()
     }
 }
 
