@@ -87,6 +87,9 @@ class ViewController: UIViewController {
         mm.delegate = self
         ss.delegate = self
         clearFields()
+        //add gesture recognition to kill keyboard when tapping outside entry fields
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
     }
 }
 

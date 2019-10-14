@@ -80,6 +80,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         userInput.delegate = self
         verifyUserInput.delegate = self
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 }
 
