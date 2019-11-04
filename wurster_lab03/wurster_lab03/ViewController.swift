@@ -52,6 +52,11 @@ class ViewController: UIViewController {
         pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
     }
     
+    @IBAction func unwindToStart(_ unwindSegue: UIStoryboardSegue) {
+//        let sourceViewController = unwindSegue.source
+        // Use data from the view controller which initiated the unwind segue
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueToPicker = segue.destination as! SetterViewController
         segueToPicker.rawData = [topClock, bottomClock]
@@ -60,6 +65,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         topClock = setterData[0]
         bottomClock = setterData[1]
         reset()
