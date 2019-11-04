@@ -2,6 +2,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBAction func aaa(_ sender: UISlider) {
+        print(self.aaa)
+    }
     @IBOutlet weak var boatName: UITextField!
     @IBOutlet weak var hh: UITextField!
     @IBOutlet weak var mm: UITextField!

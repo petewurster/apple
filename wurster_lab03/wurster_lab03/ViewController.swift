@@ -3,9 +3,10 @@ import UIKit
 class ViewController: UIViewController {
 
     //create 2 clocks and a heartbeat signal
-    let topClock: Clock = Clock()
-    let bottomClock: Clock = Clock()
-    var pulse: Timer = Timer()
+    var topClock = Clock(0)
+    var bottomClock = Clock(0)
+    var pulse = Timer()
+    var setterData = [Clock(90), Clock(90)]
 
     //create top button
     @IBOutlet weak var topLabel: UIButton!
@@ -23,12 +24,7 @@ class ViewController: UIViewController {
     
     //reset both clocks
     @IBAction func resetButton(_ sender: UIButton) {
-        //to prevent doubling, disable and then...
-        pulse.invalidate()
-        Clock.resetClocks(topClock, bottomClock)
-        updateLabels()
-        //... re-enable the pulse
-        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
+        reset()
     }
     
     //send message allowing Clocks to update themselves
@@ -47,14 +43,26 @@ class ViewController: UIViewController {
         bottomLabel.setTitle(bottomClock.label, for: .normal)
     }
     
+    func reset() {
+        //to prevent doubling, disable and then...
+        pulse.invalidate()
+        Clock.resetClocks(topClock, bottomClock)
+        updateLabels()
+        //... re-enable the pulse
+        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
+    }
     
-    
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let segueToPicker = segue.destination as! SetterViewController
+        segueToPicker.rawData = [topClock, bottomClock]
+        reset()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        topLabel.setTitle(topClock.label, for: .normal)
-        bottomLabel.setTitle(bottomClock.label, for: .normal)
-        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
+        topClock = setterData[0]
+        bottomClock = setterData[1]
+        reset()
     }
 
 }

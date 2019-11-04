@@ -8,7 +8,7 @@ struct TimeStamp {
         return 3600 * hh + 60 * mm + ss
     }
     var stringTime: String {
-        return "\(hh) hours, \(mm) mins and \(ss) secs"
+        return "\(hh) hours\n \(mm) mins\n \(ss) secs"
     }
     
     init(hh: Int, mm: Int, ss: Int) {
@@ -23,6 +23,5 @@ struct TimeStamp {
         self.mm = (totalSeconds % 3600) / 60
         self.ss = (totalSeconds % 3600) % 60
     }
-    
     
 }
