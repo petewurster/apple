@@ -3,33 +3,37 @@ import UIKit
 class ViewController: UIViewController {
 
     //create 2 clocks and a heartbeat signal
-    var topClock = Clock(0)
-    var bottomClock = Clock(0)
-    var pulse = Timer()
-    var setterData = [Clock(90), Clock(90)]
+    let topClock: Clock = Clock()
+    let bottomClock: Clock = Clock()
+    var pulse: Timer = Timer()
 
     //create top button
     @IBOutlet weak var topLabel: UIButton!
     @IBAction func topClockTapped(_ sender: UIButton) {
         updateLabels()
-        topClock.switchClocks(bottomClock)
+        topClock.switchClocks(otherClock: bottomClock)
     }
     
     //create bottom button
     @IBOutlet weak var bottomLabel: UIButton!
     @IBAction func bottomClockTapped(_ sender: UIButton) {
         updateLabels()
-        bottomClock.switchClocks(topClock)
+        bottomClock.switchClocks(otherClock: topClock)
     }
     
     //reset both clocks
     @IBAction func resetButton(_ sender: UIButton) {
-        reset()
+        //to prevent doubling, disable and then...
+        pulse.invalidate()
+        Clock.resetClocks(clocks: topClock, bottomClock)
+        updateLabels()
+        //... re-enable the pulse
+        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
     }
     
     //send message allowing Clocks to update themselves
     @objc func checkClocks() {
-        Clock.updateStatus(topClock, bottomClock)
+        Clock.updateStatus(clocks: topClock, bottomClock)
         updateLabels()
         //disable pulse when somebody has run out of time
         if topClock.label == topClock.endMessage || bottomClock.label == bottomClock.endMessage {
@@ -43,34 +47,14 @@ class ViewController: UIViewController {
         bottomLabel.setTitle(bottomClock.label, for: .normal)
     }
     
-    func reset() {
-        //to prevent doubling, disable and then...
-        pulse.invalidate()
-        Clock.resetClocks(topClock, bottomClock)
-        updateLabels()
-        //... re-enable the pulse
-        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
-    }
     
-    @IBAction func unwindToStart(_ unwindSegue: UIStoryboardSegue) {
-//        let sourceViewController = unwindSegue.source
-        // Use data from the view controller which initiated the unwind segue
-    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let segueToPicker = segue.destination as! SetterViewController
-        segueToPicker.rawData = [topClock, bottomClock]
-        reset()
-    }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        topClock = setterData[0]
-        bottomClock = setterData[1]
-        reset()
+        topLabel.setTitle(topClock.label, for: .normal)
+        bottomLabel.setTitle(bottomClock.label, for: .normal)
+        pulse = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.checkClocks), userInfo: nil, repeats: true)
     }
 
 }
